@@ -1,10 +1,35 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "baseUrl": ".",
     "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@config/*": [
+        "./src/config/*"
+      ],
+      "@providers/*": [
+        "./src/providers/*"
+      ],
+      "@theme/*": [
+        "./src/constants/theme/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@constants/*": [
+        "./src/constants/*"
       ]
     }
   },
