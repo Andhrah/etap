@@ -1,50 +1,60 @@
-# Welcome to your Expo app 👋
+# ETAP Mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Production-grade Expo Router scaffold for a mobile assessment codebase. This repository is intentionally set up as a clean foundation, not as a feature-complete app.
 
-## Get started
+## Principles
 
-1. Install dependencies
+- File-based routing stays thin. Route files only compose screens and navigation.
+- All product code lives under `src/`.
+- Shared concerns are separated from feature concerns.
+- Runtime configuration is typed and explicit.
+- Tooling defaults favor strictness and maintainability.
 
-   ```bash
-   npm install
-   ```
+## Project Structure
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```text
+app/                    Expo Router screens and navigation
+docs/                   Architecture and engineering conventions
+src/
+  components/           Reusable UI building blocks
+    shared/             Shared primitives (AppText, AppLayout, AppButton, etc.)
+  config/               Runtime environment configuration
+  constants/            App-wide constants and enums
+    theme/              Colors, tokens, and navigation themes
+  hooks/                Shared custom hooks
+  providers/            Singleton provider composition
+  utils/                Helper functions and utilities
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Detailed conventions live in `docs/architecture.md`.
 
-## Learn more
+## Commands
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npm install
+npm run start
+npm run ios
+npm run android
+npm run web
+npm run lint
+npm run typecheck
+npm run check
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Environment
 
-## Join the community
+Expo public runtime variables should use the `EXPO_PUBLIC_` prefix.
 
-Join our community of developers creating universal apps.
+```bash
+EXPO_PUBLIC_APP_NAME=ETAP
+EXPO_PUBLIC_APP_ENV=development
+EXPO_PUBLIC_API_BASE_URL=https://api.example.com
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+The current baseline reads these values from `src/app/config/env.ts` and exposes the active app environment in the Expo config.
+
+## Notes
+
+- This setup intentionally removes demo/template code from `create-expo-app`.
+- Native folders are not committed; generate them only when the delivery requirements justify prebuild/native customization.
+- The next implementation step should happen inside a feature slice under `src/features/`.

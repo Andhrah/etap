@@ -1,0 +1,58 @@
+import type { ExpoConfig } from 'expo/config';
+
+const appName = process.env.EXPO_PUBLIC_APP_NAME ?? 'ETAP';
+const appEnv = process.env.EXPO_PUBLIC_APP_ENV ?? 'development';
+
+const config: ExpoConfig = {
+  name: appName,
+  slug: 'etap',
+  version: '1.0.0',
+  orientation: 'portrait',
+  icon: './assets/images/icon.png',
+  scheme: 'etap',
+  userInterfaceStyle: 'automatic',
+  newArchEnabled: true,
+  ios: {
+    supportsTablet: true,
+    bundleIdentifier: 'com.etap.mobile',
+  },
+  android: {
+    package: 'com.etap.mobile',
+    adaptiveIcon: {
+      backgroundColor: '#E6F4FE',
+      foregroundImage: './assets/images/android-icon-foreground.png',
+      backgroundImage: './assets/images/android-icon-background.png',
+      monochromeImage: './assets/images/android-icon-monochrome.png',
+    },
+    edgeToEdgeEnabled: true,
+    predictiveBackGestureEnabled: false,
+  },
+  web: {
+    output: 'static',
+    favicon: './assets/images/favicon.png',
+  },
+  plugins: [
+    'expo-router',
+    [
+      'expo-splash-screen',
+      {
+        image: './assets/images/splash-icon.png',
+        imageWidth: 200,
+        resizeMode: 'contain',
+        backgroundColor: '#0B1220',
+        dark: {
+          backgroundColor: '#0B1220',
+        },
+      },
+    ],
+  ],
+  experiments: {
+    typedRoutes: true,
+    reactCompiler: true,
+  },
+  extra: {
+    appEnv,
+  },
+};
+
+export default config;
