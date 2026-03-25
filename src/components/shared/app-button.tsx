@@ -2,15 +2,17 @@
  * @fileoverview Theme-aware button primitive for consistent interactive elements.
  * @module components/shared/app-button
  */
+import { Ionicons } from '@expo/vector-icons';
 import {
   ActivityIndicator,
   Pressable,
   StyleSheet,
   type StyleProp,
   type ViewStyle,
+  useWindowDimensions,
 } from 'react-native';
 
-import { radius, spacing } from '@theme/tokens';
+import { getResponsiveSpacingScale, getScaledValue, radius, spacing } from '@theme/tokens';
 import { useAppTheme } from '@theme/use-app-theme';
 
 import { AppText } from './app-text';
@@ -43,8 +45,9 @@ type AppButtonSize = 'sm' | 'md' | 'lg';
  * @property style - Additional styles to merge with base button
  */
 type AppButtonProps = {
+  icon?: keyof typeof Ionicons.glyphMap;
   title: string;
-  onPress?: () => void;
+  onPress?: (() => void) | undefined;
   variant?: AppButtonVariant;
   size?: AppButtonSize;
   disabled?: boolean;
@@ -81,10 +84,13 @@ const AppButton = ({
   variant = 'primary',
   size = 'md',
   disabled = false,
+  icon,
   loading = false,
   style,
 }: AppButtonProps) => {
   const { colors } = useAppTheme();
+  const { height, width } = useWindowDimensions();
+  const spacingScale = getResponsiveSpacingScale(width, height);
 
   const isDisabled = disabled || loading;
 
@@ -116,18 +122,20 @@ const AppButton = ({
 
   const sizeStyles = {
     sm: {
-      paddingVertical: spacing.xs,
-      paddingHorizontal: spacing.sm,
+      paddingVertical: getScaledValue(spacing.sm, spacingScale),
+      paddingHorizontal: getScaledValue(spacing.sm, spacingScale),
     },
     md: {
-      paddingVertical: spacing.sm,
-      paddingHorizontal: spacing.md,
+      paddingVertical: getScaledValue(spacing.md, spacingScale),
+      paddingHorizontal: getScaledValue(spacing.md, spacingScale),
     },
     lg: {
-      paddingVertical: spacing.md,
-      paddingHorizontal: spacing.lg,
+      paddingVertical: getScaledValue(spacing.lg, spacingScale),
+      paddingHorizontal: getScaledValue(spacing.lg, spacingScale),
     },
   };
+
+  const iconSize = size === 'sm' ? 16 : size === 'md' ? 18 : 20;
 
   return (
     <Pressable
@@ -144,9 +152,14 @@ const AppButton = ({
       {loading ? (
         <ActivityIndicator size="small" color={textColors[variant]} />
       ) : (
-        <AppText variant="label" style={{ color: textColors[variant] }}>
-          {title}
-        </AppText>
+        <>
+          {icon != null && (
+            <Ionicons color={textColors[variant]} name={icon} size={iconSize} />
+          )}
+          <AppText variant="label" style={{ color: textColors[variant] }}>
+            {title}
+          </AppText>
+        </>
       )}
     </Pressable>
   );
@@ -157,6 +170,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.sm,
     borderWidth: 1,
     alignItems: 'center',
+    gap: spacing.sm,
     justifyContent: 'center',
     flexDirection: 'row',
   },
@@ -170,4 +184,3 @@ const styles = StyleSheet.create({
 
 export { AppButton };
 export type { AppButtonProps, AppButtonSize, AppButtonVariant };
-

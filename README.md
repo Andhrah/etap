@@ -49,6 +49,7 @@ Expo public runtime variables should use the `EXPO_PUBLIC_` prefix.
 EXPO_PUBLIC_APP_NAME=ETAP
 EXPO_PUBLIC_APP_ENV=development
 EXPO_PUBLIC_API_BASE_URL=https://api.example.com
+GOOGLE_MAPS_API_KEY=your-android-google-maps-api-key
 ```
 
 The current baseline reads these values from `src/app/config/env.ts` and exposes the active app environment in the Expo config.
