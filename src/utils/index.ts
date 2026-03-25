@@ -3,5 +3,9 @@
  * @module utils
  */
 
-// Export utility functions here as the app grows
-// Example: export { formatDate } from './format-date';
+export {
+  calculateDistanceMeters,
+  clampRadiusMeters,
+  getGeofenceStatus,
+  getGeofenceTransition,
+} from './geofence';

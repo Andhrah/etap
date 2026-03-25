@@ -37,6 +37,7 @@ const radius = {
   sm: 8,
   md: 16,
   lg: 24,
+  xl: 32,
   pill: 999,
 } as const;
 
@@ -60,5 +61,66 @@ const typography = {
   caption: 12,
 } as const;
 
-export { radius, spacing, typography };
+/**
+ * Screen-width and height thresholds used for responsive layout adjustments.
+ */
+const breakpoints = {
+  compactHeight: 780,
+  compactWidth: 390,
+  largePhoneWidth: 430,
+} as const;
 
+/**
+ * Returns a multiplier for viewport-aware spacing values.
+ *
+ * Smaller phones receive tighter spacing while larger phones gain a modest
+ * increase so layouts keep similar visual density across devices.
+ *
+ * @param screenWidth - Current viewport width
+ * @param screenHeight - Current viewport height
+ * @returns Spacing multiplier for the active viewport
+ */
+const getResponsiveSpacingScale = (screenWidth: number, screenHeight: number) => {
+  if (screenWidth <= breakpoints.compactWidth || screenHeight <= breakpoints.compactHeight) {
+    return 0.88;
+  }
+
+  if (screenWidth >= breakpoints.largePhoneWidth) {
+    return 1.08;
+  }
+
+  return 1;
+};
+
+/**
+ * Returns a multiplier for viewport-aware typography values.
+ *
+ * Typography shifts more subtly than spacing to preserve hierarchy while
+ * avoiding oversized headings on small devices.
+ *
+ * @param screenWidth - Current viewport width
+ * @param screenHeight - Current viewport height
+ * @returns Typography multiplier for the active viewport
+ */
+const getResponsiveTypographyScale = (screenWidth: number, screenHeight: number) => {
+  if (screenWidth <= breakpoints.compactWidth || screenHeight <= breakpoints.compactHeight) {
+    return 0.94;
+  }
+
+  if (screenWidth >= breakpoints.largePhoneWidth) {
+    return 1.04;
+  }
+
+  return 1;
+};
+
+/**
+ * Applies responsive scaling to a numeric token value.
+ *
+ * @param value - Base token value
+ * @param scale - Responsive multiplier
+ * @returns Rounded scaled token value
+ */
+const getScaledValue = (value: number, scale: number) => Math.round(value * scale);
+
+export { breakpoints, getResponsiveSpacingScale, getResponsiveTypographyScale, getScaledValue, radius, spacing, typography };

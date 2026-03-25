@@ -3,5 +3,5 @@
  * @module hooks
  */
 
-// Export shared hooks here as the app grows
-// Example: export { useDebounce } from './use-debounce';
+export { useGeofence } from './use-geofence';
+export { useLiveLocation } from './use-live-location';

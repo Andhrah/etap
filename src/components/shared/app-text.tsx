@@ -3,9 +3,9 @@
  * @module components/shared/app-text
  */
 import type { PropsWithChildren } from 'react';
-import { StyleSheet, Text, type StyleProp, type TextStyle } from 'react-native';
+import { StyleSheet, Text, type StyleProp, type TextStyle, useWindowDimensions } from 'react-native';
 
-import { typography } from '@theme/tokens';
+import { getResponsiveTypographyScale, getScaledValue, typography } from '@theme/tokens';
 import { useAppTheme } from '@theme/use-app-theme';
 
 /**
@@ -99,12 +99,29 @@ const AppText = ({
   style,
 }: AppTextProps) => {
   const { colors } = useAppTheme();
+  const { height, width } = useWindowDimensions();
+  const typographyScale = getResponsiveTypographyScale(width, height);
+  const variantStyle = variantStyles[variant];
 
   return (
     <Text
       style={[
         styles.base,
-        variantStyles[variant],
+        variantStyle,
+        {
+          fontSize:
+            variantStyle.fontSize == null
+              ? undefined
+              : getScaledValue(variantStyle.fontSize, typographyScale),
+          letterSpacing:
+            variantStyle.letterSpacing == null
+              ? undefined
+              : Number((variantStyle.letterSpacing * typographyScale).toFixed(2)),
+          lineHeight:
+            variantStyle.lineHeight == null
+              ? undefined
+              : getScaledValue(variantStyle.lineHeight, typographyScale),
+        },
         { color: tone === 'muted' ? colors.textMuted : colors.text },
         style,
       ]}>
